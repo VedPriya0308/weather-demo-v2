@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DataCapture name="DC-Capture-Location" continueOnError="false" enabled="true">
+    <DisplayName>DC-Capture-Location</DisplayName>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <Capture>
+        <Collect ref="request.queryparam.near" default="0"/>
+        <DataCollector>dc_weather_history_v2_location</DataCollector>
+    </Capture>
+</DataCapture>

@@ -1,0 +1,16 @@
+{
+    "operationConfigs": [
+      {
+        "apiSource": "weather-history-v2",
+        "operations": [
+          {
+            "resource": "/",
+            "methods": [
+              "GET", "POST"
+            ]
+          }
+        ]
+      }
+    ],
+    "operationConfigType": "proxy"
+  }

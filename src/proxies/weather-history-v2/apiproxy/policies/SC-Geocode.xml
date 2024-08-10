@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="SC-Geocode">
+    <DisplayName>SC-Geocode</DisplayName>
+    <Properties/>
+    <Request>
+        <Set>
+            <Verb>GET</Verb>
+            <QueryParams>
+                <QueryParam name="address">{request.queryparam.near}</QueryParam>
+                <QueryParam name="key">{geocode-apikey}</QueryParam>
+            </QueryParams>
+        </Set>
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    </Request>
+    <Response>geocodeResponse</Response>
+    <HTTPTargetConnection>
+        <Properties/>
+        <URL>https://maps.googleapis.com/maps/api/geocode/json</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>

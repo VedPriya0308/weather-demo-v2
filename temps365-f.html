@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Weather API Demo</title>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/demo.css">
+
+	<script type="text/javascript">
+
+		// Load the Visualization API 
+		google.load('visualization', '1.0', { 'packages': ['corechart'] });
+
+		// wait until the document loads
+		$(document).ready(function () {
+
+			// if the query button was clicked
+			$("#queryButton").click(getData);
+
+			// if the station search button was clicked
+			$("#findButton").click(findStation);
+
+			$("#apikey").val(getUrlParameter('apikey'));
+
+			var orgname = getUrlParameter('orgname');
+			var env = getUrlParameter('env');
+
+			if (orgname && env) {
+				$("#endpoint").val("https://" + orgname + "-" + env + ".apigee.net/v1/weather-history");
+			}
+
+
+		});
+
+		function findStation() {
+
+			var address = $('#address').val();
+			var endpoint = $('#endpoint').val();
+			var apikey = $('#apikey').val();
+			$('#station').html("<select><option>Loading...</option></select>");
+
+			jQuery.ajax({
+				url: endpoint + "/stations",
+				type: "GET",
+				headers: {"apikey": apikey}, 
+				data: {
+					"near": address,
+					"apikey": apikey,
+				},
+			})
+				.done(function (data, textStatus, jqXHR) {
+					console.log("HTTP Request Succeeded: " + jqXHR.status);
+					var selectList = "<select name='numbers'>";
+					for (var i = 0; i < data.stations.length; i++) {
+						if (data.stations[i].id.substring(2, 3) == "1") {
+							continue;
+						}
+
+						if (data.stations[i].hcn_crn_flag == "HCN") {
+							data.stations[i].name = "**" + data.stations[i].name;
+						}
+						selectList += "<option value=" + data.stations[i].id + " >" + data.stations[i].name + " (" +
+							data.stations[i].distance + " mi)" + "</option>";
+
+					}
+					selectList += "</select>";
+					$('#station').html(selectList);
+				})
+				.fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("HTTP Request Failed");
+				})
+				.always(function () {
+					/* ... */
+				});
+		}
+
+		// Call Edge management API for analtyics and get data
+		function getData() {
+			// read values from HTML input fields
+			var station = $('#station').val();
+			var year = $('#year').val();
+			$('#responsecode').css('visibility', 'hidden');
+			var endpoint = $('#endpoint').val();
+			var apikey = $('#apikey').val();
+			// update status, ui
+			$('#chart_div').hide();
+			$('#responsecode').html("Status: ");
+			$('#statusMessage').html("Running query...");
+			$('#statusMessage').show();
+			console.log("Running query...");
+			var url = endpoint + "/stations/" + station + "/years/" + year + "/temp?" +
+				"apikey=" + apikey;
+			$('#uri').html("URI: " + url);
+
+			// call API and get data
+			jQuery.ajax({
+				url: url,
+				type: "GET",
+				headers: {"apikey": apikey}, 
+			})
+				.done(function (data, textStatus, jqXHR) {
+					$('#statusMessage').hide();
+					console.log("Query successful");
+					$('#responsecode').html("Status: " + jqXHR.status);
+					updateData(data);
+					$('#responsecode').css('background', '#1eda00');
+					$('#responsecode').css('visibility', 'visible');
+				})
+				.fail(function (jqXHR, textStatus, errorThrown) {
+					console.log("HTTP Request Failed");
+					$('#statusMessage').html(textStatus + ": " + errorThrown);
+					$('#responsecode').html("Status: " + jqXHR.status);
+					$('#responsecode').css('background', '#FF0000');
+					$('#responsecode').css('visibility', 'visible');
+				});
+		}
+
+		// update HTML, draw graph
+		function updateData(tempData) {
+			if (typeof (tempData.data) == "undefined" || tempData.data.length == 0) {
+				// no results? tell the user
+				$('#dateInfo').html("No data");
+				$('#statusMessage').html("No data");
+				$('#statusMessage').show();
+				console.log("No data");
+				$('#chart_div').hide();
+				return;
+			}
+
+			// create the data structure for the graph
+			var data = new google.visualization.DataTable();
+
+			data.addColumn('string', 'Date');
+			data.addColumn('number', 'High Temp (F)');
+			data.addColumn('number', 'Low Temp (F)');
+
+
+			// Build data for graph
+			for (var i = 0; i < tempData.data.length; i++) {
+				temp = [];
+				temp.push(tempData.data[i].date);
+				temp.push(Number(ctof(tempData.data[i].high)));
+				temp.push(Number(ctof(tempData.data[i].low)));
+				data.addRow(temp);
+			}
+
+			// Change format of tool-tip to show date and hours and minutes
+			//var date_formatter = new google.visualization.DateFormat({ pattern: "MMM dd, yyyy HH:mm"}); 
+			//date_formatter.format(data, 0);
+
+			// Set chart options
+			var options = {
+				chartArea: { top: 10, left: 70 },
+				width: 1200,
+				height: 500,
+				backgroundColor: '#1e1e1e',
+				vAxis: {
+					textStyle: { color: '#fff' },
+					titleTextStyle: { color: '#fff' }
+				},
+				hAxis: {
+					textStyle: { color: '#fff' },
+					titleTextStyle: { color: '#fff' },
+					baselineColor: { color: '#fff' },
+					showTextEvery: 60
+				},
+				legend: {
+					textStyle: { color: '#fff' },
+					titleTextStyle: { color: '#fff' },
+				},
+				animation: {
+					startup: true,
+					duration: 500,
+					easing: 'out'
+				},
+				series: {
+					1: {
+						color: '#88C1F2'
+					},
+					0: {
+						color: '#FF0000'
+					}
+
+				}
+			};
+
+			// Instantiate and draw chart, passing in chart options.
+			var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+			$('#chart_div').show();
+			chart.draw(data, options);
+		}
+
+		function ctof(value) {
+			return value * 9 / 5 + 32;
+		}
+
+		var getUrlParameter = function getUrlParameter(sParam) {
+			var sPageURL = window.location.search.substring(1),
+				sURLVariables = sPageURL.split('&'),
+				sParameterName,
+				i;
+
+			for (i = 0; i < sURLVariables.length; i++) {
+				sParameterName = sURLVariables[i].split('=');
+
+				if (sParameterName[0] === sParam) {
+					return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+				}
+			}
+		};
+
+	</script>
+</head>
+
+<body style="color: white; font-family: sans-serif; background-color: #1e1e1e">
+	<p>Endpoint: <input type="text" id="endpoint" value="" size="50" required>&nbsp;&nbsp;
+		API Key: <input type="text" id="apikey" value="" size="30" required> <br /> </p>
+	Address: <input type="text" id="address" value="" size="50" required>&nbsp;&nbsp;<input type="submit" value="Find"
+		id="findButton"> <br />
+	<p>&nbsp;&nbsp;Station:
+		<select id="station">
+			<option>USW00023272</option>
+		</select> &nbsp;&nbsp;&nbsp;
+		Year: <input type="text" id="year" value="2018">&nbsp;&nbsp;&nbsp;
+		<input type="submit" value="Run query" id="queryButton">
+	</p>
+	<div style="font-family: sans-serif; font-size: 30px; font-weight: 400; color: white;">Daily temperature (F)</div>
+	<br />
+	<div id="statusMessage" style="font-family: sans-serif; font-size: 30px; font-weight: 300; color: white"></div>
+	<!-- div for the graph -->
+	<div id="chart_div"></div>
+
+	<!-- div id="uri"></div><br/> -->
+
+	<br />
+	<span id="responsecode" class="responseCode"></span>
+</body>
+
+</html>

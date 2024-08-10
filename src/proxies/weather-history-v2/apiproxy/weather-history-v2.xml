@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="12" name="weather-history-v2">
+    <DisplayName>weather-history-v2</DisplayName>
+    <Description>Delivers historical weather</Description>
+    <BasePaths>/v2/weather-history</BasePaths>
+    <Policies>
+        <Policy>AM-Build-Temp-Query</Policy>
+        <Policy>AM-Spike-Error</Policy>
+        <Policy>AM-Quota-Error</Policy>
+        <Policy>AM-Build-Wind-Query</Policy>
+        <Policy>JS-Calc-Cords</Policy>
+        <Policy>JS-Format-Data</Policy>
+        <Policy>JS-Format-Stations</Policy>
+        <Policy>SC-Geocode</Policy>
+        <Policy>EV-Get-Cords</Policy>
+        <Policy>EV-Get-Temp-Vars</Policy>
+        <Policy>EV-Get-Wind-Vars</Policy>
+        <Policy>SA-Rate-Limit</Policy>
+        <Policy>RC-Cache-Response</Policy>
+        <Policy>AM-Set-Path-Suffix</Policy>
+        <Policy>AM-Set-Query</Policy>
+        <Policy>KVM-Get-Api-Key</Policy>
+        <Policy>DC-Capture-Location</Policy>
+        <Policy>Q-Check-Quota</Policy>
+        <Policy>VA-Verify-API-Key</Policy>
+        <Policy>CORS</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>jsc://formatstations.js</Resource>
+        <Resource>jsc://boundingbox.js</Resource>
+        <Resource>jsc://formatdata.js</Resource>
+    </Resources>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

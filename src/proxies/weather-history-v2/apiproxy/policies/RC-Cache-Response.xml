@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResponseCache async="false" continueOnError="false" enabled="true" name="RC-Cache-Response">
+    <DisplayName>RC-Cache-Response</DisplayName>
+    <CacheResource>weather-history-cache</CacheResource>
+    <Properties/>
+    <CacheKey>
+        <Prefix/>
+        <KeyFragment ref="request.uri" type="string"/>
+    </CacheKey>
+    <ExpirySettings>
+        <TimeoutInSeconds ref="">20</TimeoutInSeconds>
+    </ExpirySettings>
+    <SkipCacheLookup/>
+    <SkipCachePopulation/>
+    <ExcludeErrorResponse>true</ExcludeErrorResponse>
+</ResponseCache>

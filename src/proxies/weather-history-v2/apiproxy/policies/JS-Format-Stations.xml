@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="JS-Format-Stations">
+    <DisplayName>JS-Format-Stations</DisplayName>
+    <Properties/>
+    <ResourceURL>jsc://formatstations.js</ResourceURL>
+</Javascript>

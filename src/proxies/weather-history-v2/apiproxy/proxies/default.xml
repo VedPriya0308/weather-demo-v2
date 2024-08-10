@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+    <Description/>
+    <FaultRules>
+        <FaultRule name="QuotaViolation">
+            <Step>
+                <Name>AM-Quota-Error</Name>
+            </Step>
+            <Condition>(fault.name = "QuotaViolation")</Condition>
+        </FaultRule>
+        <FaultRule name="SpikeError">
+            <Step>
+                <Name>AM-Spike-Error</Name>
+            </Step>
+            <Condition>(fault.name = "SpikeArrestViolation")</Condition>
+        </FaultRule>
+    </FaultRules>
+    <DefaultFaultRule name="fault-rule"/>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>CORS</Name>
+            </Step>
+            <Step>
+                <Name>VA-Verify-API-Key</Name>
+                <Condition>request.verb != "OPTIONS"</Condition>
+            </Step>
+            <Step>
+                <Name>SA-Rate-Limit</Name>
+            </Step>
+            <Step>
+                <Name>Q-Check-Quota</Name>
+            </Step>
+            <Step>
+                <Name>DC-Capture-Location</Name>
+                <Condition>(flowname = "stations") or ( (proxy.pathsuffix MatchesPath "/stations") and (request.verb = "GET") )</Condition>
+            </Step>
+            <Step>
+                <Name>RC-Cache-Response</Name>
+                <Condition>request.verb != "OPTIONS"</Condition>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <Flows>
+        <Flow name="stations">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>KVM-Get-Api-Key</Name>
+                </Step>
+                <Step>
+                    <Name>SC-Geocode</Name>
+                </Step>
+                <Step>
+                    <Name>EV-Get-Cords</Name>
+                    <Condition>(geocodeResponse.content != null)</Condition>
+                </Step>
+                <Step>
+                    <Name>JS-Calc-Cords</Name>
+                </Step>
+                <Step>
+                    <Name>AM-Set-Query</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <Name>JS-Format-Stations</Name>
+                </Step>
+            </Response>
+            <Condition>(flowname = "stations") or ( (proxy.pathsuffix MatchesPath "/stations") and (request.verb = "GET") )</Condition>
+        </Flow>
+        <Flow name="temp">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>EV-Get-Temp-Vars</Name>
+                </Step>
+                <Step>
+                    <Name>AM-Build-Temp-Query</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <Name>JS-Format-Data</Name>
+                </Step>
+            </Response>
+            <Condition>(flowname = "temp") or ( (proxy.pathsuffix MatchesPath "/stations/*/years/*/temp") and (request.verb = "GET") ) </Condition>
+        </Flow>
+        <Flow name="wind">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>EV-Get-Wind-Vars</Name>
+                </Step>
+                <Step>
+                    <Name>AM-Build-Wind-Query</Name>
+                </Step>
+            </Request>
+            <Response>
+                <Step>
+                    <Name>JS-Format-Wind-Data</Name>
+                </Step>
+            </Response>
+            <Condition>(flowname = "wind") or ( (proxy.pathsuffix MatchesPath "/stations/*/years/*/wind") and (request.verb = "GET") ) </Condition>
+        </Flow>
+    </Flows>
+    <HTTPProxyConnection>
+        <BasePath>/v2/weather-history</BasePath>
+        <Properties/>
+        <VirtualHost>secure</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="NoRoute">
+        <Condition>request.verb == "OPTIONS"</Condition>
+    </RouteRule>
+    <RouteRule name="default">
+        <TargetEndpoint>default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>

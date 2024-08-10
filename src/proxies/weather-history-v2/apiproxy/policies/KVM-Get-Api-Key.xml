@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="KVM-Get-Api-Key" mapIdentifier="weather-history-v2-kvm">
+    <Scope>environment</Scope>
+    <Get assignTo="geocode-apikey">
+        <Key>
+            <Parameter>geocode-apikey</Parameter>
+        </Key>
+    </Get>
+</KeyValueMapOperations>

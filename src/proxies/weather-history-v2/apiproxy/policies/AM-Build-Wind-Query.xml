@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-Build-Wind-Query">
+    <DisplayName>AM-Build-Wind-Query</DisplayName>
+    <Properties/>
+    <Set>
+        <Verb>POST</Verb>
+        <Payload contentType="application/json">
+        {
+          "kind": "bigquery#queryRequest",
+          "query": "SELECT wx.date, round(wx.value/10.0 * 2.23694) AS temp FROM [bigquery-public-data:ghcn_d.ghcnd_{year}] AS wx WHERE id = '{station}' AND qflag IS NULL AND element = 'AWND' ORDER BY wx.date",
+          "defaultDataset": {
+            "datasetId": "ghcn_d",
+            "projectId": "[PROJECT]"
+          },
+          "useQueryCache": true
+        }
+        </Payload>
+        <Path>bigquery/v2/projects/[PROJECT]/queries</Path>
+    </Set>
+    <AssignVariable>
+        <Name>flowname</Name>
+        <Value>wind</Value>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>

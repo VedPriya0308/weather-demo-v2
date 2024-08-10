@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Quota async="false" continueOnError="false" enabled="true" type="calendar" name="Q-Check-Quota">
+    <DisplayName>Q-Check-Quota</DisplayName>
+    <StartTime>2017-01-01 12:00:00</StartTime>
+    <Distributed>true</Distributed>
+    <Synchronous>true</Synchronous>
+    <UseQuotaConfigInAPIProduct stepName="VA-Verify-API-Key">
+        <DefaultConfig>
+            <Allow>10</Allow>
+            <Interval>1</Interval>
+            <TimeUnit>minute</TimeUnit>
+        </DefaultConfig>
+    </UseQuotaConfigInAPIProduct>
+</Quota>

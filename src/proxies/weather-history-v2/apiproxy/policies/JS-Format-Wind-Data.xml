@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript continueOnError="false" enabled="true" timeLimit="200" name="JS-Format-Wind-Data">
+    <DisplayName>JS-Format-Wind-Data</DisplayName>
+    <Properties/>
+    <ResourceURL>jsc://format-wind-data.js</ResourceURL>
+</Javascript>

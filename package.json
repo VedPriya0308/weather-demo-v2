@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@cucumber/cucumber": "^7.3.0",
+    "apickli": "^3.0.1",
+    "apigeelint": "^2.37.0",
+    "cucumber-html-reporter": "^5.4.0",
+    "eslint": "^7.0.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.11.0",
+    "prettier": "^2.0.5"
+  },
+  "scripts": {
+    "lint": "./node_modules/apigeelint/cli.js -s ./src/proxies/weather-history-v2/apiproxy -f table.js -e PO013,PO028",
+    "test": "npx cucumber-js --publish-quiet test/"
+  }
+}

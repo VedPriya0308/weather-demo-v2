@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-Set-Query">
+    <DisplayName>AM-Set-Query</DisplayName>
+    <Properties/>
+    <Set>
+        <Verb>POST</Verb>
+        <Payload contentType="application/json">
+        {
+          "kind": "bigquery#queryRequest",
+          "query": "SELECT id, name, state, latitude, longitude, hcn_crn_flag FROM [bigquery-public-data:ghcn_d.ghcnd_stations] WHERE latitude &gt; {minLat} AND latitude &lt; {maxLat} AND longitude &gt; {minLon} AND longitude &lt; {maxLon}",
+          "defaultDataset": {
+            "datasetId": "ghcn_d",
+            "projectId": "[PROJECT]"
+          },
+          "useQueryCache": true
+        }
+        </Payload>
+        <Path>bigquery/v2/projects/[PROJECT]/queries</Path>
+    </Set>
+    <AssignVariable>
+        <Name>flowname</Name>
+        <Value>stations</Value>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
