@@ -99,21 +99,6 @@ npm run test
 - [Web Front End Fahrenheit](https://markjkelly.github.io/apigee-notebooks/temps365-f.html)
 - [Web Front End Celsius](https://markjkelly.github.io/apigee-notebooks/temps365-f.html)
 
-## Support
-Feel free to ping me directly @markjkelly1 or open an issue.
-
-## Roadmap
-See the Project Issues page for a list of planned enhancement. Feel free to open and issue if you have additonal ideas or suggestions. 
-
-## Contributing
-Contributions welcome! Fork this repo and submit a PR for review.
-
-## Authors and acknowledgment
-Thanks to the many CEs who have contributed to this demo in lots of ways - creating assets, documenting features, sharing code and maintaining environments @danekind (created the orginal demo), @mtalreja, @teodlh, @nabilrehman and many others who have helped along the way.
-
-## Project status
-Active
-
 ## Cleanup
 
 If you want to clean up the artefacts from this example in your Apigee Organization, first source your `env.sh` script, and then run
