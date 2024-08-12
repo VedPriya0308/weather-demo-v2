@@ -12,7 +12,7 @@ In additon v2 makes some incremental changes and improvements such as:
 - Scripted config, deployment and cleanup
 - Integration test suite to validate setup and generate traffic
 - Implements proxy best practice recommendations per apigeelint
-- Improvements to HTML front end (also now hosted [Fahrenheit](https://markjkelly.github.io/apigee-notebooks/temps365-f.html) and [Celsius](https://markjkelly.github.io/apigee-notebooks/temps365-f.html))
+- Improvements to HTML front end (also now hosted [Fahrenheit](https://github.com/VedPriya0308/weather-demo-v2/temps365-f.html) and [Celsius](https://github.com/VedPriya0308/weather-demo-v2/temps365-f.html))
 - API Key moved to request header
 - Target Server
 - Refactored KVM and Cache
@@ -55,7 +55,7 @@ curl -s https://raw.githubusercontent.com/apigee/apigeecli/master/downloadLatest
 
 
 ```bash
-git clone git@gitlab.com:google-cloud-ce/googlers/markjkelly/apigee-weather-history-demo-v2.git
+git clone git@github.com:VedPriya0308/weather-demo-v2.git
 cd apigee-weather-history-demo-v2
 ```
 
@@ -96,8 +96,8 @@ npm run test
 
 ## Usage
 
-- [Web Front End Fahrenheit](https://markjkelly.github.io/apigee-notebooks/temps365-f.html)
-- [Web Front End Celsius](https://markjkelly.github.io/apigee-notebooks/temps365-f.html)
+- [Web Front End Fahrenheit](https://github.com/VedPriya0308/weather-demo-v2/temps365-f.html)
+- [Web Front End Celsius](https://github.com/VedPriya0308/weather-demo-v2/temps365-f.html)
 
 ## Cleanup
 
