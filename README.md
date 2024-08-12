@@ -96,8 +96,6 @@ npm run test
 
 ## Usage
 
-Check out the go/demos entry [here](https://cloud-demo-hub.corp.google.com/demo/Weather-API-with-Apigee-BigQuery-integration/505) for slides and more info related to this demo.
-
 - [Web Front End Fahrenheit](https://markjkelly.github.io/apigee-notebooks/temps365-f.html)
 - [Web Front End Celsius](https://markjkelly.github.io/apigee-notebooks/temps365-f.html)
 
